@@ -33,7 +33,7 @@ public class Enemy : MonoBehaviour
         if(lastTime >= movingCooltime)
         {
             x = Random.Range(0.0f, 2.0f) - 1.0f;
-            z = Random.Range(0.0f, 2.0f) - 1;
+            z = Random.Range(0.0f, 2.0f) - 1.0f;
             lastTime = 0.0f;
         }
         transform.Translate(x*speed*Time.deltaTime, 0.0f, z*speed*Time.deltaTime);

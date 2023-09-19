@@ -9,6 +9,7 @@ public class PlayerCtrl : MonoBehaviour
     public float moveSpeed = 15.0f;
     public float turnSpeed = 100.0f;
     public int ammo = 100;
+    public int dashScale = 1;
 
     public GameObject bullet;
     public GameObject granade;
@@ -42,11 +43,11 @@ public class PlayerCtrl : MonoBehaviour
         // 좌측 쉬프트키 입력시 이동 속도 증가(대시)
         if(Input.GetKey(KeyCode.LeftShift))
         {
-            moveSpeed = 45.0f;
+            dashScale = 3;
         }
         else
         {
-            moveSpeed = 15.0f;
+            dashScale = 1;
         }
 
         // 상승(스페이스바), 하강(컨트롤)
@@ -62,7 +63,7 @@ public class PlayerCtrl : MonoBehaviour
             u = 0;
         }
 
-        tr.Translate(h * Time.deltaTime * moveSpeed, u * Time.deltaTime * moveSpeed, v * Time.deltaTime * moveSpeed);
+        tr.Translate(h * Time.deltaTime * moveSpeed * dashScale, u * Time.deltaTime * moveSpeed * dashScale, v * Time.deltaTime * moveSpeed * dashScale);
         tr.Rotate(0, m_x * Time.deltaTime * turnSpeed, 0);
 
         // 마우스 왼쪽(총알), 마우스 오른쪽(유탄) 발사

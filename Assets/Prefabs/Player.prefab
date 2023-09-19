@@ -149,7 +149,7 @@ GameObject:
   m_Layer: 6
   m_Name: FirePoint
   m_TagString: Untagged
-  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -605,6 +605,7 @@ MonoBehaviour:
   moveSpeed: 25
   turnSpeed: 100
   ammo: 100
+  dashScale: 1
   bullet: {fileID: 829645089749330419, guid: a82fb425ea70fbd4abba9ab1ff21c56e, type: 3}
   granade: {fileID: 6178410351993518649, guid: 211fe53d0dac59d42837b317cb0f8bd3, type: 3}
 --- !u!4 &8059826493478605201 stripped
