@@ -4,23 +4,20 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    public float hp = 100.0f;
-    public float damage = 10.0f;
+    public int hp = 3;
+    public int damage = 5;
     public float speed = 5.0f;
+    public bool isDead = false;
 
-    public float movingCooltime = 3.0f;
-    public float lastTime = 3.0f;
-
-    public float x = 0;
-    public float z = 0;
-
-    private void Awake() {
-        StartCoroutine(DestroyEnemy());
-    }
+    public GameObject playerBase;
+    
+    private Rigidbody rb;
 
     // Start is called before the first frame update
     void Start()
     {
+        playerBase = GameObject.Find("Base");
+        rb = this.GetComponent<Rigidbody>();
         //Debug.Log($"{gameObject.name} hp: {hp}");
         //Debug.Log($"{gameObject.name} damage: {damage}");
         //Debug.Log($"{gameObject.name} speed: {speed}");
@@ -29,22 +26,29 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // movingCooltime이 될때 마다 이동 방향을 랜덤하게 변경
-        if(lastTime >= movingCooltime)
+        if(playerBase != null && !isDead)
         {
-            x = Random.Range(0.0f, 2.0f) - 1.0f;
-            z = Random.Range(0.0f, 2.0f) - 1.0f;
-            lastTime = 0.0f;
+            Transform tr_Base = playerBase.transform;
+            Vector3 dir = tr_Base.position - transform.position;
+            transform.Translate(dir.normalized * speed * Time.deltaTime);
+            //transform.rotation = Quaternion.LookRotation(dir.normalized, Vector3.up);
         }
-        transform.Translate(x*speed*Time.deltaTime, 0.0f, z*speed*Time.deltaTime);
-        lastTime += Time.deltaTime;
+        // 체력이 모두 소진되면 키네마틱 해제 및 3초 뒤 제거
+        if(hp <= 0 && !isDead)
+        {
+            GameManager.instance.enemyCount += 1;
+            this.rb.isKinematic = false;
+            Invoke("DestroyEnemy", 3.0f);
+            isDead = true;
+        }
     }
 
-    IEnumerator DestroyEnemy()
+    public void HitProjectile(int n)
     {
-        // 15초 뒤 자동으로 제거
-        yield return new WaitForSeconds(15.0f);
+        hp -= n;
+    }
 
+    void DestroyEnemy(){
         Destroy(gameObject);
     }
 

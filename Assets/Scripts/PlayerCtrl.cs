@@ -6,7 +6,7 @@ public class PlayerCtrl : MonoBehaviour
 {
     public float hp = 100.0f;
     public float damage = 10.0f;
-    public float moveSpeed = 15.0f;
+    public float moveSpeed = 5.0f;
     public float turnSpeed = 100.0f;
     public int ammo = 100;
     public int dashScale = 1;
@@ -15,16 +15,17 @@ public class PlayerCtrl : MonoBehaviour
     public GameObject granade;
 
     private Transform tr;
+    private CapsuleCollider col;
+    private Rigidbody rb;
     private Transform firePoint;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-
         tr = this.gameObject.GetComponent<Transform>();
+        col = this.gameObject.GetComponent<CapsuleCollider>();
+        rb = this.gameObject.GetComponent<Rigidbody>();
         firePoint = GameObject.Find("FirePoint").GetComponent<Transform>();
 
         //Debug.Log($"{gameObject.name} hp: {hp}");
@@ -38,7 +39,7 @@ public class PlayerCtrl : MonoBehaviour
         float h = Input.GetAxisRaw("Horizontal");
         float v = Input.GetAxisRaw("Vertical");
         float m_x = Input.GetAxis("Mouse X");
-        float u = 0f;
+        float j = 0;
 
         // 좌측 쉬프트키 입력시 이동 속도 증가(대시)
         if(Input.GetKey(KeyCode.LeftShift))
@@ -50,20 +51,23 @@ public class PlayerCtrl : MonoBehaviour
             dashScale = 1;
         }
 
-        // 상승(스페이스바), 하강(컨트롤)
         if(Input.GetKey(KeyCode.Space))
         {
-            u = 1;
+            j = 1;
         }
         else if(Input.GetKey(KeyCode.LeftControl))
         {
-            u = -1;
+            j = -1;
         }
-        else{
-            u = 0;
+        else
+        {
+            j = 0;
         }
 
-        tr.Translate(h * Time.deltaTime * moveSpeed * dashScale, u * Time.deltaTime * moveSpeed * dashScale, v * Time.deltaTime * moveSpeed * dashScale);
+        //tr.Translate(h * Time.deltaTime * moveSpeed * dashScale, u * Time.deltaTime * moveSpeed * dashScale, v * Time.deltaTime * moveSpeed * dashScale);
+        //rb.AddForce((tr.forward * v + tr.right * h) * moveSpeed * dashScale);
+
+        rb.velocity = (transform.forward * v + transform.right * h + transform.up * j) * moveSpeed * dashScale;
         tr.Rotate(0, m_x * Time.deltaTime * turnSpeed, 0);
 
         // 마우스 왼쪽(총알), 마우스 오른쪽(유탄) 발사
@@ -75,5 +79,12 @@ public class PlayerCtrl : MonoBehaviour
         {
             Instantiate(granade, firePoint.position, firePoint.rotation);
         }
+
+        // 물리적 이동방식의 문제로 인해 잠시 보류
+        // if(Input.GetKey(KeyCode.Space))
+        // {
+        //     Debug.Log("space");
+        //    rb.AddForce(Vector3.up);
+        // }
     }
 }

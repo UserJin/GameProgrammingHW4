@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - _SpawnPoint
+  - _Enemy
+  - _Bullet
+  - _Granade
   layers:
   - Default
   - TransparentFX
@@ -15,8 +18,8 @@ TagManager:
   - PLAYER
   - ENEMY
   - PROJECTILE
-  - 
-  - 
+  - BASE
+  - OBSTACLE
   - 
   - 
   - 

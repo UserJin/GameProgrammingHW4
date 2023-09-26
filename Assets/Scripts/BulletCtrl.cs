@@ -23,4 +23,13 @@ public class BulletCtrl : MonoBehaviour
 
         Destroy(gameObject);
     }
+
+    // 적 또는 장애물과 충돌하면 파괴
+    private void OnCollisionEnter(Collision other) {
+        if (other.gameObject.tag == "_Enemy")
+        {
+            other.gameObject.GetComponent<Enemy>().HitProjectile(1);
+        }
+        Destroy(gameObject);
+    }
 }
